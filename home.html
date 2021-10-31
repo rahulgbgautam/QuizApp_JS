@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Quiz App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body>
+ 
+ <div style="height: 100vh; position: relative; background-color:#161616;">
+      <div style="position: absolute;top: 50%; left: 50%;transform: translate(-50%,-50%);">
+        <div class="card shadow bg-dark text-light" style="width:1000px;height: 350px;">
+          <div class="d-flex justify-content-center mt-5 mb-2">
+            <h5 id="questions">Question Comes Here</h5>            
+          </div>
+          <div class="card-body text-left">
+             <ul style="list-style: none;">
+               <li>
+                <input class="m-2 answer" type="radio" name="ans" id="ans1">
+                  <label for="ans1" id="option1">Option</label>  
+                </li>
+               <li>
+                  <input class="m-2 answer" type="radio" name="ans" id="ans2">
+                  <label for="ans2" id="option2">Option</label>  
+                </li>
+               <li>
+                <input  class="m-2 answer" type="radio" name="ans" id="ans3">
+                  <label for="ans3" id="option3">Option</label>  
+                </li>
+               <li>
+                <input  class="m-2 answer" type="radio" name="ans" id="ans4">
+                <label for="ans4" id="option4">Option</label>  
+              </li>
+             </ul>
+          </div>
+        <div class="text-center m-1" id="showResults" style="height: 50px;width: 100%;">
+        </div>
+        <a class="btn btn-light btn-block p-2" id="reloadAns" style="display: none;">Reload</a>
+
+        <input class="btn-sm m-3 btn-light" type="submit" name="" id="submit">
+        </div>
+    </div>
+ </div>
+ <script type="text/javascript">
+     const quizDB = [
+              {
+                  question:"Q1:Inside which HTML element do we put the JavaScript?",
+                  a:"javascript",
+                  b:"js",
+                  c:"src",
+                  d:"script",
+                  ans:"ans4"
+              },
+              {
+                  question:"Q2:Where is the correct place to insert a JavaScript?",
+                  a:"Both the head section and the body section are correct",
+                  b:"The head section",
+                  c:"The body section",
+                  d:"None of the above",
+                  ans:"ans2"
+              },
+              {
+                  question:"Q3:Is it necessary for the external script file to contain a <script> tag?",
+                  a:"Yes",
+                  b:"NO",
+                  c:"Depends on the type of include",
+                  d:"None of the above",
+                  ans:"ans1"
+              },
+              {
+                  question:"Q4:What is the correct syntax for referring to an external script called 'gfg.js'?",
+                  a:"script name='gfg.js'",
+                  b:"script href='gfg.js'",
+                  c:"script src='gfg.js'",
+                  d:"None of these",
+                  ans:"ans3"
+              },
+              {
+                  question:"Q5:How many ways are there with which we can declare a variable in javascript?",
+                  a:"Only one",
+                  b:"Three",
+                  c:"Infinitely many",
+                  d:"None of the above",
+                  ans:"ans4"
+              }
+  ];
+
+  const questions = document.getElementById('questions');
+  const option1 = document.getElementById('option1');
+  const option2 = document.getElementById('option2');
+  const option3 = document.getElementById('option3');
+  const option4 = document.getElementById('option4');
+  const showResult = document.getElementById('showResults');
+  const reloadAns = document.getElementById('reloadAns');
+
+  var count = 0;
+  var rightAns = 0;
+  const loadQuestion = () => {
+      data = quizDB[count];
+      questions.innerHTML = data.question;
+      option1.innerHTML = data.a;
+      option2.innerHTML = data.b;
+      option3.innerHTML = data.c;
+      option4.innerHTML = data.d;
+  }
+
+  loadQuestion();
+
+  const deselectAll = () => {
+
+       let elements = document.getElementsByName('ans');
+        elements.forEach((rate) => {
+            rate.checked = false;
+        })
+
+  }
+
+  const getCheckAnswer = () => {
+        let answer;
+        let elements = document.getElementsByName('ans');
+        elements.forEach((rate) => {
+            if (rate.checked) {
+                answer = rate.id;
+            }
+        })
+        return answer;
+  }
+
+  submit.addEventListener('click', () => {
+    const checkedAns = getCheckAnswer();
+    const correctAns = quizDB[count].ans;
+      if(checkedAns == correctAns){
+          rightAns++;
+      }
+      count++;
+      deselectAll();
+      if(count<quizDB.length){
+          loadQuestion();
+      }else{
+        showResult.innerHTML = `<h3>You have selected right answers ${rightAns}/5</h3>`; 
+        submit.style.display = "none";
+        reloadAns.style.display = "block";
+
+      }
+
+  });
+
+  reloadAns.addEventListener('click', () => {
+      // console.log("vdnkjvn");
+      showResult.style.display = "none";
+      submit.style.display = "block";
+        reloadAns.style.display = "none";
+          count=0;
+          loadQuestion();
+
+      });
+
+ </script>
+</body>
+</html>
